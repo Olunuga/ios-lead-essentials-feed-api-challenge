@@ -39,13 +39,16 @@ class FeedLoaderItemMapper {
 		guard httpResponse.statusCode == OK_200, let root = try? JSONDecoder().decode(Root.self, from: data) else {
 			return .failure(RemoteFeedLoader.Error.invalidData)
 		}
-		return .success(root.items.map({ FeedImage(id: $0.imageId, description: $0.imageDescription, location: $0.imageLocation, url: $0.imageUrl)
-		}))
+		return .success(root.feeds)
 	}
 }
 
 struct Root: Decodable {
 	let items: [ImageItem]
+
+	var feeds: [FeedImage] {
+		items.map { $0.feedImage }
+	}
 }
 
 struct ImageItem: Decodable {
@@ -59,5 +62,9 @@ struct ImageItem: Decodable {
 		case imageDescription = "image_desc"
 		case imageLocation = "image_loc"
 		case imageUrl = "image_url"
+	}
+
+	var feedImage: FeedImage {
+		return FeedImage(id: imageId, description: imageDescription, location: imageLocation, url: imageUrl)
 	}
 }
