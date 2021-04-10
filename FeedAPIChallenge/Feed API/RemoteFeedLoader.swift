@@ -28,7 +28,7 @@ public final class RemoteFeedLoader: FeedLoader {
 					completion(.failure(Error.invalidData))
 					return
 				}
-				completion(.success(root.items.map({FeedImage(id: $0.imageId, description: $0.imageDescription, location: $0.imageLocation, url: $0.imageUrl)
+				completion(.success(root.items.map({ FeedImage(id: $0.imageId, description: $0.imageDescription, location: $0.imageLocation, url: $0.imageUrl)
 				})))
 			}
 		}
